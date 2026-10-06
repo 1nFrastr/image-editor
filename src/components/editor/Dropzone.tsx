@@ -5,6 +5,18 @@ import { useRef, useState } from "react";
 export function Dropzone({ onImage }: { onImage: (file: File) => void }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [over, setOver] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  async function loadSample() {
+    setLoading(true);
+    try {
+      const res = await fetch("https://picsum.photos/seed/darkroom/1200/800");
+      const blob = await res.blob();
+      onImage(new File([blob], "sample.jpg", { type: blob.type || "image/jpeg" }));
+    } catch {
+      setLoading(false);
+    }
+  }
 
   return (
     <div
@@ -27,8 +39,17 @@ export function Dropzone({ onImage }: { onImage: (file: File) => void }) {
       <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full border border-ink/15 text-xl">
         🖼
       </div>
-      <p className="text-sm text-ink/80">Drop an image here, or click to browse</p>
-      <p className="mt-1 text-xs text-mut">PNG · JPEG · WebP — edited locally, nothing uploaded</p>
+      <p className="text-sm font-medium text-ink/80">点击上传图片,或直接拖拽到这里</p>
+      <p className="mt-1 text-xs text-mut">支持 PNG · JPEG · WebP — 全部在本地处理,不会上传到服务器</p>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          loadSample();
+        }}
+        className="mt-4 rounded-md border border-ink/15 px-3 py-1.5 text-xs text-mut transition-colors hover:border-accent hover:text-accent"
+      >
+        {loading ? "加载示例图…" : "没有图片?用一张示例图试试 →"}
+      </button>
       <input
         ref={inputRef}
         type="file"
