@@ -24,6 +24,11 @@ export function Editor() {
   const [transform, setTransform] = useState<Transform>(defaultTransform);
   const [preset, setPreset] = useState("None");
   const [tab, setTab] = useState<Tab>("adjust");
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", theme === "dark");
+  }, [theme]);
 
   function loadImage(file: File) {
     const url = URL.createObjectURL(file);
@@ -84,17 +89,25 @@ export function Editor() {
     <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[1fr_300px]">
       {/* Stage */}
       <main className="flex min-h-[60vh] flex-col p-5">
-        <header className="mb-4 flex items-baseline justify-between">
-          <h1 className="text-lg font-semibold tracking-tight">
-            Darkroom<span className="text-accent">.</span>
-          </h1>
-          {img && (
-            <p className="max-w-[50%] truncate text-xs text-mut" title={fileName}>
-              {fileName} · {img.naturalWidth}×{img.naturalHeight}
-            </p>
-          )}
+        <header className="mb-4 flex items-center justify-between gap-4">
+          <div className="flex items-baseline gap-3">
+            <h1 className="text-lg font-semibold tracking-tight">
+              Darkroom<span className="text-accent">.</span>
+            </h1>
+            {img && (
+              <p className="max-w-[40vw] truncate text-xs text-mut" title={fileName}>
+                {fileName} · {img.naturalWidth}×{img.naturalHeight}
+              </p>
+            )}
+          </div>
+          <button
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            className="rounded-full border border-ink/15 px-3 py-1 text-xs text-mut transition-colors hover:border-accent hover:text-accent"
+          >
+            {theme === "dark" ? "☀️ 浅色" : "🌙 深色"}
+          </button>
         </header>
-        <div className="flex-1 overflow-hidden rounded-xl border border-ink/10 bg-[repeating-conic-gradient(#1a1813_0%_25%,#141210_0%_50%)] bg-[length:20px_20px]">
+        <div className="checker flex-1 overflow-hidden rounded-xl border border-ink/15 shadow-sm">
           {img ? (
             <div className="flex h-full min-h-[50vh] items-center justify-center p-4">
               {/* eslint-disable-next-line @next/next/no-img-element */}

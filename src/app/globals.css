@@ -1,11 +1,27 @@
 @import "tailwindcss";
 
 :root {
+  --bg: #f5f2ec;
+  --panel: #ffffff;
+  --fg: #1c1a16;
+  --muted: #6f6a5f;
+  --accent: #c47b1d;
+  --track: #ddd7cb;
+  --thumb-ring: #ffffff;
+  --checker-a: #e9e4da;
+  --checker-b: #f4f1ea;
+}
+
+html.dark {
   --bg: #0e0d0b;
   --panel: #16140f;
   --fg: #ece6da;
   --muted: #9a927f;
   --accent: #e8a33d;
+  --track: #3a352a;
+  --thumb-ring: #0e0d0b;
+  --checker-a: #1a1813;
+  --checker-b: #141210;
 }
 
 @theme inline {
@@ -26,17 +42,24 @@ body {
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
-  height: 3px;
+  height: 4px;
   border-radius: 999px;
-  background: #3a352a;
+  background: var(--track);
   outline: none;
 }
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   background: var(--accent);
-  border: 2px solid #0e0d0b;
+  border: 2px solid var(--thumb-ring);
+  box-shadow: 0 0 0 1px var(--track);
   cursor: pointer;
 }
+
+.checker {
+  background: repeating-conic-gradient(var(--checker-a) 0% 25%, var(--checker-b) 0% 50%);
+  background-size: 20px 20px;
+}
+
