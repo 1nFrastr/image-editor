@@ -91,7 +91,7 @@ export function ExportPanel({
       <button
         onClick={download}
         disabled={!hasImage}
-        className="w-full rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-bg transition-opacity hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
+        className="w-full rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
       >
         {status ?? "Download image"}
       </button>

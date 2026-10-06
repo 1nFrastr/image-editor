@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Filters,
   Transform,
@@ -25,6 +25,7 @@ export function Editor() {
   const [preset, setPreset] = useState("None");
   const [tab, setTab] = useState<Tab>("adjust");
   const [theme, setTheme] = useState<"light" | "dark">("light");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", theme === "dark");
@@ -34,12 +35,14 @@ export function Editor() {
     const url = URL.createObjectURL(file);
     const image = new Image();
     image.onload = () => {
+      if (img) URL.revokeObjectURL(img.src);
       setImg(image);
       setFileName(file.name);
       setFilters(defaultFilters);
       setTransform(defaultTransform);
       setPreset("None");
     };
+    image.onerror = () => URL.revokeObjectURL(url);
     image.src = url;
   }
 
@@ -70,12 +73,6 @@ export function Editor() {
     ctx.drawImage(img, -img.naturalWidth / 2, -img.naturalHeight / 2);
     return canvas;
   }, [img, filters, transform]);
-
-  useEffect(() => {
-    return () => {
-      if (img) URL.revokeObjectURL(img.src);
-    };
-  }, [img]);
 
   const filterStyle = useMemo(() => cssFilter(filters), [filters]);
 
@@ -109,13 +106,30 @@ export function Editor() {
         </header>
         <div className="checker flex-1 overflow-hidden rounded-xl border border-ink/15 shadow-sm">
           {img ? (
-            <div className="flex h-full min-h-[50vh] items-center justify-center p-4">
+            <div className="relative flex h-full min-h-[50vh] items-center justify-center p-4">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={img.src}
                 alt="Editing preview"
                 style={{ filter: filterStyle, transform: cssTransform(transform) }}
                 className="max-h-[70vh] max-w-full object-contain shadow-2xl shadow-black/50"
+              />
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="absolute right-3 top-3 rounded-full border border-ink/15 bg-bg/90 px-3 py-1 text-xs text-mut shadow-sm transition-colors hover:border-accent hover:text-accent"
+              >
+                🔄 换一张图片
+              </button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  const f = e.target.files?.[0];
+                  if (f) loadImage(f);
+                  e.target.value = "";
+                }}
               />
             </div>
           ) : (
