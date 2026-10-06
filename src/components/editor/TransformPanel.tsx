@@ -1,5 +1,6 @@
 "use client";
 
+import { RotateCcwSquare, RotateCwSquare, FlipHorizontal, FlipVertical } from "lucide-react";
 import { Transform } from "@/lib/filters";
 
 export function TransformPanel({
@@ -16,11 +17,11 @@ export function TransformPanel({
       <div>
         <p className="mb-2 text-[11px] uppercase tracking-[0.18em] text-mut">Rotate</p>
         <div className="flex gap-2">
-          <button className={btn} onClick={() => onChange({ ...transform, rotate: (transform.rotate + 270) % 360 })}>
-            ⟲ 90°
+          <button className={`${btn} flex items-center justify-center gap-1.5`} onClick={() => onChange({ ...transform, rotate: (transform.rotate + 270) % 360 })}>
+            <RotateCcwSquare size={14} /> 90°
           </button>
-          <button className={btn} onClick={() => onChange({ ...transform, rotate: (transform.rotate + 90) % 360 })}>
-            ⟳ 90°
+          <button className={`${btn} flex items-center justify-center gap-1.5`} onClick={() => onChange({ ...transform, rotate: (transform.rotate + 90) % 360 })}>
+            <RotateCwSquare size={14} /> 90°
           </button>
         </div>
       </div>
@@ -28,16 +29,16 @@ export function TransformPanel({
         <p className="mb-2 text-[11px] uppercase tracking-[0.18em] text-mut">Flip</p>
         <div className="flex gap-2">
           <button
-            className={`${btn} ${transform.flipH ? "border-accent text-accent" : ""}`}
+            className={`${btn} flex items-center justify-center gap-1.5 ${transform.flipH ? "border-accent text-accent" : ""}`}
             onClick={() => onChange({ ...transform, flipH: !transform.flipH })}
           >
-            Horizontal
+            <FlipHorizontal size={14} /> Horizontal
           </button>
           <button
-            className={`${btn} ${transform.flipV ? "border-accent text-accent" : ""}`}
+            className={`${btn} flex items-center justify-center gap-1.5 ${transform.flipV ? "border-accent text-accent" : ""}`}
             onClick={() => onChange({ ...transform, flipV: !transform.flipV })}
           >
-            Vertical
+            <FlipVertical size={14} /> Vertical
           </button>
         </div>
       </div>

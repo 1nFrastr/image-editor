@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { Image as ImageIcon, Sparkles, Loader2 } from "lucide-react";
 
 export function Dropzone({ onImage }: { onImage: (file: File) => void }) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -36,8 +37,8 @@ export function Dropzone({ onImage }: { onImage: (file: File) => void }) {
         over ? "border-accent bg-accent/5" : "border-ink/15 hover:border-ink/30"
       }`}
     >
-      <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full border border-ink/15 text-xl">
-        🖼
+      <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full border border-ink/15 text-accent">
+        <ImageIcon size={22} />
       </div>
       <p className="text-sm font-medium text-ink/80">点击上传图片,或直接拖拽到这里</p>
       <p className="mt-1 text-xs text-mut">支持 PNG · JPEG · WebP — 全部在本地处理,不会上传到服务器</p>
@@ -46,9 +47,10 @@ export function Dropzone({ onImage }: { onImage: (file: File) => void }) {
           e.stopPropagation();
           loadSample();
         }}
-        className="mt-4 rounded-md border border-ink/15 px-3 py-1.5 text-xs text-mut transition-colors hover:border-accent hover:text-accent"
+        className="mt-4 flex items-center gap-1.5 rounded-md border border-ink/15 px-3 py-1.5 text-xs text-mut transition-colors hover:border-accent hover:text-accent"
       >
-        {loading ? "加载示例图…" : "没有图片?用一张示例图试试 →"}
+        {loading ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
+        {loading ? "加载示例图…" : "没有图片?用一张示例图试试"}
       </button>
       <input
         ref={inputRef}

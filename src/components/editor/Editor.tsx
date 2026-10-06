@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Sun, Moon, RotateCcw, ImagePlus, SlidersHorizontal, FlipHorizontal2, Download } from "lucide-react";
 import {
   Filters,
   Transform,
@@ -76,10 +77,10 @@ export function Editor() {
 
   const filterStyle = useMemo(() => cssFilter(filters), [filters]);
 
-  const tabs: { id: Tab; label: string }[] = [
-    { id: "adjust", label: "Adjust" },
-    { id: "transform", label: "Transform" },
-    { id: "export", label: "Export" },
+  const tabs: { id: Tab; label: string; icon: React.ReactNode }[] = [
+    { id: "adjust", label: "Adjust", icon: <SlidersHorizontal size={13} /> },
+    { id: "transform", label: "Transform", icon: <FlipHorizontal2 size={13} /> },
+    { id: "export", label: "Export", icon: <Download size={13} /> },
   ];
 
   return (
@@ -99,9 +100,10 @@ export function Editor() {
           </div>
           <button
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="rounded-full border border-ink/15 px-3 py-1 text-xs text-mut transition-colors hover:border-accent hover:text-accent"
+            className="flex items-center gap-1.5 rounded-full border border-ink/15 px-3 py-1 text-xs text-mut transition-colors hover:border-accent hover:text-accent"
           >
-            {theme === "dark" ? "☀️ 浅色" : "🌙 深色"}
+            {theme === "dark" ? <Sun size={13} /> : <Moon size={13} />}
+            {theme === "dark" ? "浅色" : "深色"}
           </button>
         </header>
         <div className="checker flex-1 overflow-hidden rounded-xl border border-ink/15 shadow-sm">
@@ -116,9 +118,9 @@ export function Editor() {
               />
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="absolute right-3 top-3 rounded-full border border-ink/15 bg-bg/90 px-3 py-1 text-xs text-mut shadow-sm transition-colors hover:border-accent hover:text-accent"
+                className="absolute right-3 top-3 flex items-center gap-1.5 rounded-full border border-ink/15 bg-bg/90 px-3 py-1 text-xs text-mut shadow-sm transition-colors hover:border-accent hover:text-accent"
               >
-                🔄 换一张图片
+                <ImagePlus size={13} /> 换一张图片
               </button>
               <input
                 ref={fileInputRef}
@@ -141,9 +143,9 @@ export function Editor() {
         {img && (
           <button
             onClick={resetAll}
-            className="mt-3 self-start text-xs text-mut underline-offset-4 hover:text-accent hover:underline"
+            className="mt-3 flex items-center gap-1.5 self-start text-xs text-mut underline-offset-4 hover:text-accent hover:underline"
           >
-            Reset all edits
+            <RotateCcw size={12} /> Reset all edits
           </button>
         )}
       </main>
@@ -155,10 +157,11 @@ export function Editor() {
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={`flex-1 rounded-md px-2 py-1.5 text-xs transition-colors ${
+              className={`flex flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-1.5 text-xs transition-colors ${
                 tab === t.id ? "bg-ink/10 text-ink" : "text-mut hover:text-ink"
               }`}
             >
+              {t.icon}
               {t.label}
             </button>
           ))}

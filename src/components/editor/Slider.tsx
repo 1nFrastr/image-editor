@@ -1,5 +1,7 @@
 "use client";
 
+import { RotateCcw } from "lucide-react";
+
 export function Slider({
   label,
   value,
@@ -29,10 +31,10 @@ export function Slider({
           {onReset && (
             <button
               onClick={onReset}
-              className="text-[10px] text-mut hover:text-accent transition-colors"
+              className="text-mut hover:text-accent transition-colors"
               title="Reset"
             >
-              ⟲
+              <RotateCcw size={11} />
             </button>
           )}
         </span>
